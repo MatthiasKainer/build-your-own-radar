@@ -11,6 +11,7 @@
     "lint-prettier:check": "eslint . && prettier --check .",
     "lint-prettier:fix": "eslint . --fix && prettier --write .",
     "start": "cypress open --env host=$TEST_URL",
+    "serve": "serve dist",
     "coverage": "nyc npm run test",
     "quality": "npm run lint-prettier:check && npm run coverage"
   },
@@ -60,7 +61,8 @@
     "jquery": "^3.6.0",
     "jquery-ui": "^1.13.1",
     "lodash": "^4.17.21",
-    "sanitize-html": "^2.7.0"
+    "sanitize-html": "^2.7.0",
+    "serve": "^13.0.2"
   },
   "standard": {
     "globals": [
