@@ -2,7 +2,7 @@ const INCLUDE_HEADER = "#!includes"
 
 const canParse = (data) => (data && data.includes && data.includes(INCLUDE_HEADER))
 
-const addLine = (result, line) => (result += line + "\n", result)
+const addLine = (result, line) => line.trim() === "" ? result : (result += line + "\n", result)
 
 async function load(data = "", options = {
     loader: async () => {
