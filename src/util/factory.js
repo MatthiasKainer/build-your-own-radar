@@ -8,6 +8,7 @@ const _ = {
   each: require('lodash/each'),
 }
 
+const CsvIncludes = require('./csvIncludes')
 const InputSanitizer = require('./inputSanitizer')
 const Radar = require('../models/radar')
 const Quadrant = require('../models/quadrant')
@@ -150,11 +151,24 @@ const CSVDocument = function (url) {
   var self = {}
 
   self.build = function () {
-    d3.csv(url).then(createBlips)
+    const headers = new Headers({
+      "Content-Type": "text/csv"
+    })
+    d3.text(url, { headers })
+      .then(csv => {
+        if (CsvIncludes.canParse(csv)) {
+          return CsvIncludes.load(csv, { loader: (url) => d3.text(url, { headers }) })
+            .then(d3.csvParse)
+        } else {
+          return d3.csvParse(csv)
+        }
+      })
+      .then(createBlips)
   }
 
   var createBlips = function (data) {
     try {
+
       var columnNames = data.columns
       delete data.columns
       var contentValidator = new ContentValidator(columnNames)

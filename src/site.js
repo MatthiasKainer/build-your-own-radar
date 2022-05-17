@@ -1,3 +1,6 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 require('./common')
 require('./images/logo.png')
 require('./images/radar_legend.png')

@@ -56,11 +56,13 @@
   },
   "dependencies": {
     "chance": "^1.1.8",
+    "core-js": "^3.22.5",
     "d3": "^7.3.0",
     "d3-tip": "^0.7.1",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.13.1",
     "lodash": "^4.17.21",
+    "regenerator-runtime": "^0.13.9",
     "sanitize-html": "^2.7.0",
     "serve": "^13.0.2"
   },

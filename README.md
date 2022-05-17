@@ -17,6 +17,8 @@ The original radar has an isNew column. This radar has a context column, that wi
 The default dockerfile is running the radar as an http server, not as a webpack dev environment. To run that, build the Dockerfile.dev. 
 The docker image [mkainer/build-your-own-radar](https://hub.docker.com/repository/docker/mkainer/build-your-own-radar) available on dockerhub uses the static server, NOT the development image.
 
+In the CSV file, one can use `#!includes UrlToFile.csv` references to split up the csv file. 
+
 ## Demo
 
 You can see this in action at https://radar.thoughtworks.com. If you plug in [this data](https://docs.google.com/spreadsheets/d/18A7oDuavlh89rAmqcaXpqle8QLqIvlAkoEUxcObzuUM/edit#gid=1985253373) you'll see [this visualization](https://radar.thoughtworks.com/?sheetId=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F18A7oDuavlh89rAmqcaXpqle8QLqIvlAkoEUxcObzuUM%2Fedit%23gid%3D1985253373).
