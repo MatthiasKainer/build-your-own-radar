@@ -7,6 +7,7 @@
     "build": "webpack --mode production",
     "dev": "webpack-dev-server --mode development",
     "test": "jasmine",
+    "test:watch": "npx nodemon --ext js --exec 'jasmine'",
     "test:e2e": "cypress run --env host=$TEST_URL",
     "lint-prettier:check": "eslint . && prettier --check .",
     "lint-prettier:fix": "eslint . --fix && prettier --write .",

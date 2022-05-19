@@ -5,6 +5,9 @@ const example = {
 Babel,adopt,tools,Software,test`,
     csvIncludes: `name,ring,quadrant,context,description
 #!includes trial.csv
+Babel,adopt,tools,Software,test`,
+    csvIncludesAndTranforms: `name,ring,quadrant,context,description
+#!includes !transforms($[0], trial, $[1], Software, $[2]) trial.csv
 Babel,adopt,tools,Software,test`
 }
 
@@ -16,6 +19,19 @@ describe("CSV Includes", () => {
         })
         it("returns true if a csv file with includes", () => {
             expect(CsvIncludes.canParse(example.csvIncludes)).toBeTrue()
+        })
+    })
+
+    describe("transformation", () => {
+        it("does not apply on a line without a transformation", () => {
+            const transform = CsvIncludes.transform({ line: "hello world" })
+            expect(transform.apply).toBe(false)
+        })
+
+        it("applies a transformation for a line that has the directive", () => {
+            const transform = CsvIncludes.transform({ line: " !transforms($[0], trial, $[1], Software(), $[2]) trial.csv" })
+            expect(transform.apply).not.toBe(false)
+            expect(transform.apply("one, two, three, four")).toBe("one, trial, two, Software(), three")
         })
     })
 
@@ -34,6 +50,18 @@ describe("CSV Includes", () => {
             const result = await CsvIncludes.load(example.csvIncludes, { loader: loader.and.resolveTo(csv) })
             expect(result).toBe(`name,ring,quadrant,context,description
 ${csv}
+Babel,adopt,tools,Software,test`)
+            expect(loader.calls.count()).toBe(1)
+        })
+
+        it("loads a new file if included, and applies transformations", async () => {
+            const loader = jasmine.createSpy()
+            const csv = `Apache Kafka,languages & frameworks,test
+Apache Kafka,languages & frameworks,test`;
+            const result = await CsvIncludes.load(example.csvIncludesAndTranforms, { loader: loader.and.resolveTo(csv) })
+            expect(result).toBe(`name,ring,quadrant,context,description
+Apache Kafka, trial, languages & frameworks, Software, test
+Apache Kafka, trial, languages & frameworks, Software, test
 Babel,adopt,tools,Software,test`)
             expect(loader.calls.count()).toBe(1)
         })
