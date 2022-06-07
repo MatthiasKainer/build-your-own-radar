@@ -4,14 +4,42 @@ const canParse = (data) => (data && data.includes && data.includes(INCLUDE_HEADE
 
 const addLine = (result, line) => line.trim() === "" ? result : (result += line + "\n", result)
 
+const split = (line = "") => {
+    const explode = []
+    let current = ""
+    let inBlock = false, escaped = false
+    for (const char of line) {
+        if (inBlock && !escaped && char === '"') {
+            inBlock = false
+        } else if (char === "\\") {
+            current += char
+            escaped = true
+        } else if (escaped) {
+            current += char
+            escaped = false
+        } else if (char === '"') {
+            inBlock = true
+        } else if (!inBlock && char === ",") {
+            explode.push(current)
+            current = ""
+        } else {
+            current += char
+        }
+    }
+    explode.push(current)
+    return explode
+}
+
 const transform = ({ line = "" }) => {
     if (!line.includes("!transforms")) return { apply: false, line }
 
     let template = ""
     const apply = (value) => {
         let result = template;
-        value.split(",").forEach((slot, index) => {
-            result = result.replace(new RegExp(`\\$\\[${index}\\]`, "gi"), slot.trim())
+        const fit = (slot = "") => slot.includes(",") ? `"${slot.trim()}"` : slot.trim()
+
+        split(value).forEach((slot, index) => {
+            result = result.replace(new RegExp(`\\$\\[${index}\\]`, "gi"), fit(slot))
         })
         return result
     }
@@ -90,6 +118,7 @@ async function load(data = "", options = {
 
 module.exports = {
     canParse,
+    split,
     load,
     transform
 }

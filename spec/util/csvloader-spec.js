@@ -12,6 +12,18 @@ Babel,adopt,tools,Software,test`
 }
 
 
+describe("csv reader", () => {
+    it("splits a simple line correctly", () => {
+        expect(CsvIncludes.split("Babel,adopt,tools,Software,test")).toEqual(["Babel", "adopt", "tools", "Software", "test"])
+    })
+    it("splits a line with a blocked string correctly", () => {
+        expect(CsvIncludes.split("Babel,adopt,tools,Software,\"test, or don't, but i do\"")).toEqual(["Babel", "adopt", "tools", "Software", "test, or don't, but i do"])
+    })
+    it("splits a line with a blocked string and escaped quotes correctly", () => {
+        expect(CsvIncludes.split(`Babel,adopt,tools,Software,"test, or don\\"t, but i do"`)).toEqual(["Babel", "adopt", "tools", "Software", "test, or don\\\"t, but i do"])
+    })
+})
+
 describe("CSV Includes", () => {
     describe("can parse", () => {
         it("returns false if not a csv file with includes", () => {
@@ -56,12 +68,12 @@ Babel,adopt,tools,Software,test`)
 
         it("loads a new file if included, and applies transformations", async () => {
             const loader = jasmine.createSpy()
-            const csv = `Apache Kafka,languages & frameworks,test
-Apache Kafka,languages & frameworks,test`;
+            const csv = `Apache Kafka,"languages, frameworks",test
+Apache Kafka,"languages, frameworks",test`;
             const result = await CsvIncludes.load(example.csvIncludesAndTranforms, { loader: loader.and.resolveTo(csv) })
             expect(result).toBe(`name,ring,quadrant,context,description
-Apache Kafka, trial, languages & frameworks, Software, test
-Apache Kafka, trial, languages & frameworks, Software, test
+Apache Kafka, trial, "languages, frameworks", Software, test
+Apache Kafka, trial, "languages, frameworks", Software, test
 Babel,adopt,tools,Software,test`)
             expect(loader.calls.count()).toBe(1)
         })
