@@ -158,7 +158,7 @@ const CSVDocument = function (url) {
       .then(csv => {
         if (CsvIncludes.canParse(csv)) {
           return CsvIncludes.load(csv, { loader: (url) => d3.text(url, { headers }) })
-            .then(d3.csvParse)
+            .then(csv => d3.csvParse(csv))
         } else {
           return d3.csvParse(csv)
         }

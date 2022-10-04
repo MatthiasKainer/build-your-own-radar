@@ -20,17 +20,18 @@ const split = (line = "") => {
         } else if (char === '"') {
             inBlock = true
         } else if (!inBlock && char === ",") {
-            explode.push(current)
+            explode.push(current.trim())
             current = ""
         } else {
             current += char
         }
     }
-    explode.push(current)
+    explode.push(current.trim())
     return explode
 }
 
 const transform = ({ line = "" }) => {
+    // works on a slot in the format: #!includes !transforms($[0], trial, $[1], Software, $[2]) trial.csv
     if (!line.includes("!transforms")) return { apply: false, line }
 
     let template = ""
@@ -89,7 +90,7 @@ const applyDirectives = async (line, load) => {
     }, { line, directives: [] })
     const content = await load(preparedDirectives.line)
     const lines = []
-    for (let line of content.split('\n')) {
+    for (const line of content.split('\n').filter(line => line.trim() !== "")) {
         lines.push(preparedDirectives.directives.reduce((result, directive) => {
             return directive.apply === false ? result : directive.apply(result)
         }, line))
@@ -105,7 +106,7 @@ async function load(data = "", options = {
     let result = ""
     for (let line of data.split('\n')) {
         if (!line.includes(INCLUDE_HEADER)) { result = addLine(result, line); continue }
-        line = line.replace(INCLUDE_HEADER, "").trim()
+        line = split(line.replace(INCLUDE_HEADER, "").trim()).join(",")
 
         let content = await applyDirectives(line, options.loader)
         if (canParse(content)) {
