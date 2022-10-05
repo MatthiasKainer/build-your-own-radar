@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const buildPath = path.resolve(__dirname, 'dist')
 const main = ['./src/site.js']
 const fs = require('fs')
+const route = require('./webpack.route.js')
 const config = require('./src/config')['development']
 const featureTogglesList = Object.keys(config.featureToggles)
 const scssVariables = featureTogglesList.map((x) => `$${x}:${config.featureToggles[x]};`).join('\n')
@@ -29,5 +30,6 @@ module.exports = merge(common, {
     static: { directory: buildPath },
     host: '0.0.0.0',
     port: 8080,
+    setupMiddlewares: route,
   },
 })

@@ -12,7 +12,7 @@
     "lint-prettier:check": "eslint . && prettier --check .",
     "lint-prettier:fix": "eslint . --fix && prettier --write .",
     "start": "cypress open --env host=$TEST_URL",
-    "serve": "serve dist",
+    "serve": "webpack-dev-server --mode production --config webpack.prod.js",
     "coverage": "nyc npm run test",
     "quality": "npm run lint-prettier:check && npm run coverage"
   },
@@ -64,8 +64,7 @@
     "jquery-ui": "^1.13.1",
     "lodash": "^4.17.21",
     "regenerator-runtime": "^0.13.9",
-    "sanitize-html": "^2.7.0",
-    "serve": "^13.0.2"
+    "sanitize-html": "^2.7.0"
   },
   "standard": {
     "globals": [
