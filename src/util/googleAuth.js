@@ -34,7 +34,7 @@ const GoogleAuth = function () {
 
   self.loadGoogle = function (callback) {
     self.loadedCallback = callback
-    var content = d3.select('body')
+    var content = d3.select(ROOT_ELEMENT())
     content
       .append('script')
       .attr('src', 'https://apis.google.com/js/api.js')

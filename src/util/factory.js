@@ -22,6 +22,7 @@ const ContentValidator = require('./contentValidator')
 const Sheet = require('./sheet')
 const ExceptionMessages = require('./exceptionMessages')
 const GoogleAuth = require('./googleAuth')
+const { ROOT_ELEMENT } = require('../util/page')
 
 const plotRadar = function (title, blips, currentRadarName, alternativeRadars) {
   if (title.endsWith('.csv')) {
@@ -31,7 +32,7 @@ const plotRadar = function (title, blips, currentRadarName, alternativeRadars) {
     title = title.substring(0, title.length - 5)
   }
   document.title = title
-  d3.selectAll('.loading').remove()
+  d3.select(ROOT_ELEMENT()).selectAll('.loading').remove()
 
   var rings = _.map(_.uniqBy(blips, 'ring'), 'ring')
   var ringMap = {}
@@ -254,7 +255,7 @@ const GoogleSheetInput = function () {
 
       sheet.init().build()
     } else {
-      var content = d3.select('body').append('div').attr('class', 'input-sheet')
+      var content = d3.select(ROOT_ELEMENT()).append('div').attr('class', 'input-sheet')
       setDocumentTitle()
 
       plotLogo(content)
@@ -279,7 +280,7 @@ function setDocumentTitle() {
 }
 
 function plotLoading(content) {
-  content = d3.select('body').append('div').attr('class', 'loading').append('div').attr('class', 'input-sheet')
+  content = d3.select(ROOT_ELEMENT()).append('div').attr('class', 'loading').append('div').attr('class', 'input-sheet')
 
   setDocumentTitle()
 
@@ -294,7 +295,7 @@ function plotLogo(content) {
   content
     .append('div')
     .attr('class', 'input-sheet__logo')
-    .html('<a href="https://www.thoughtworks.com"><img src="/images/tw-logo.png" / ></a>')
+    .html('<a href="https://www.thoughtworks.com"><img src="images/tw-logo.png" / ></a>')
 }
 
 function plotFooter(content) {
@@ -342,7 +343,7 @@ function plotForm(content) {
 function plotErrorMessage(exception) {
   var message = 'Oops! It seems like there are some problems with loading your data. '
 
-  var content = d3.select('body').append('div').attr('class', 'input-sheet')
+  var content = d3.select(ROOT_ELEMENT()).append('div').attr('class', 'input-sheet')
   setDocumentTitle()
 
   plotLogo(content)
@@ -353,7 +354,7 @@ function plotErrorMessage(exception) {
 
   plotBanner(content, bannerText)
 
-  d3.selectAll('.loading').remove()
+  d3.select(ROOT_ELEMENT()).selectAll('.loading').remove()
   message = "Oops! We can't find the Google Sheet you've entered"
   var faqMessage =
     'Please check <a href="https://www.thoughtworks.com/radar/how-to-byor">FAQs</a> for possible solutions.'
@@ -380,7 +381,7 @@ function plotErrorMessage(exception) {
 }
 
 function plotUnauthorizedErrorMessage() {
-  var content = d3.select('body').append('div').attr('class', 'input-sheet')
+  var content = d3.select(ROOT_ELEMENT()).append('div').attr('class', 'input-sheet')
   setDocumentTitle()
 
   plotLogo(content)
@@ -389,7 +390,7 @@ function plotUnauthorizedErrorMessage() {
 
   plotBanner(content, bannerText)
 
-  d3.selectAll('.loading').remove()
+  d3.select(ROOT_ELEMENT()).selectAll('.loading').remove()
   const currentUser = GoogleAuth.geEmail()
   let homePageURL = window.location.protocol + '//' + window.location.hostname
   homePageURL += window.location.port === '' ? '' : ':' + window.location.port

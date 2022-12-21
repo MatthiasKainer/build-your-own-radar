@@ -19,6 +19,8 @@ The docker image [mkainer/build-your-own-radar](https://hub.docker.com/repositor
 
 In the CSV file, one can use `#!includes UrlToFile.csv` references to split up the csv file. 
 
+This version also exposes the technology radar as web-component.
+
 ## Demo
 
 You can see this in action at https://radar.thoughtworks.com. If you plug in [this data](https://docs.google.com/spreadsheets/d/18A7oDuavlh89rAmqcaXpqle8QLqIvlAkoEUxcObzuUM/edit#gid=1985253373) you'll see [this visualization](https://radar.thoughtworks.com/?sheetId=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F18A7oDuavlh89rAmqcaXpqle8QLqIvlAkoEUxcObzuUM%2Fedit%23gid%3D1985253373).

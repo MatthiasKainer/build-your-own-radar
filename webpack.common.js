@@ -19,7 +19,7 @@ if (env) {
 const common = ['./src/common.js']
 
 const plugins = [
-  new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
+  new MiniCssExtractPlugin({ filename: '[name].css' }),
   new HtmlWebpackPlugin({
     template: './src/index.html',
     chunks: ['main'],
@@ -79,7 +79,9 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: { importLoaders: 1, modules: 'global', url: false },
+            options: {
+              importLoaders: 1, modules: 'global', url: false
+            },
           },
           {
             loader: 'postcss-loader',

@@ -3,6 +3,7 @@ const d3tip = require('d3-tip')
 const Chance = require('chance')
 const _ = require('lodash/core')
 
+const { ROOT_ELEMENT } = require('../util/page')
 const RingCalculator = require('../util/ringCalculator')
 const QueryParams = require('../util/queryParamProcessor')
 const AutoComplete = require('../util/autoComplete')
@@ -20,8 +21,8 @@ const Radar = function (size, radar) {
     })
 
   tip.direction(function () {
-    if (d3.select('.quadrant-table.selected').node()) {
-      var selectedQuadrant = d3.select('.quadrant-table.selected')
+    if (d3.select(ROOT_ELEMENT()).select('.quadrant-table.selected').node()) {
+      var selectedQuadrant = d3.select(ROOT_ELEMENT()).select('.quadrant-table.selected')
       if (selectedQuadrant.classed('first') || selectedQuadrant.classed('fourth')) {
         return 'ne'
       } else {
@@ -143,7 +144,7 @@ const Radar = function (size, radar) {
   }
 
   function addRing(ring, order) {
-    var table = d3.select('.quadrant-table.' + order)
+    var table = d3.select(ROOT_ELEMENT()).select('.quadrant-table.' + order)
     table.append('h3').text(ring)
     return table.append('ul')
   }
@@ -182,7 +183,7 @@ const Radar = function (size, radar) {
     startAngle = quadrantWrapper.startAngle
     order = quadrantWrapper.order
 
-    d3.select('.quadrant-table.' + order)
+    d3.select(ROOT_ELEMENT()).select('.quadrant-table.' + order)
       .append('h2')
       .attr('class', 'quadrant-table__name')
       .text(quadrant.name())
@@ -292,14 +293,14 @@ const Radar = function (size, radar) {
     }
 
     var mouseOver = function () {
-      d3.selectAll('g.blip-link').attr('opacity', 0.3)
+      d3.select(ROOT_ELEMENT()).selectAll('g.blip-link').attr('opacity', 0.3)
       group.attr('opacity', 1.0)
       blipListItem.selectAll('.blip-list-item').classed('highlight', true)
       tip.show(blip.name(), group.node())
     }
 
     var mouseOut = function () {
-      d3.selectAll('g.blip-link').attr('opacity', 1.0)
+      d3.select(ROOT_ELEMENT()).selectAll('g.blip-link').attr('opacity', 1.0)
       blipListItem.selectAll('.blip-list-item').classed('highlight', false)
       tip.hide().style('left', 0).style('top', 0)
     }
@@ -308,8 +309,8 @@ const Radar = function (size, radar) {
     group.on('mouseover', mouseOver).on('mouseout', mouseOut)
 
     var clickBlip = function () {
-      d3.select('.blip-item-description.expanded').node() !== blipItemDescription.node() &&
-        d3.select('.blip-item-description.expanded').classed('expanded', false)
+      d3.select(ROOT_ELEMENT()).select('.blip-item-description.expanded').node() !== blipItemDescription.node() &&
+        d3.select(ROOT_ELEMENT()).select('.blip-item-description.expanded').classed('expanded', false)
       blipItemDescription.classed('expanded', !blipItemDescription.classed('expanded'))
 
       blipItemDescription.on('click', function () {
@@ -321,7 +322,7 @@ const Radar = function (size, radar) {
   }
 
   function removeHomeLink() {
-    d3.select('.home-link').remove()
+    d3.select(ROOT_ELEMENT()).select('.home-link').remove()
   }
 
   function createHomeLink(pageElement) {
@@ -343,43 +344,43 @@ const Radar = function (size, radar) {
   }
 
   function removeRadarLegend() {
-    d3.select('.legend').remove()
+    d3.select(ROOT_ELEMENT()).select('.legend').remove()
   }
 
   function redrawFullRadar() {
     removeHomeLink()
     removeRadarLegend()
     tip.hide()
-    d3.selectAll('g.blip-link').attr('opacity', 1.0)
+    d3.select(ROOT_ELEMENT()).selectAll('g.blip-link').attr('opacity', 1.0)
 
     svg.style('left', 0).style('right', 0)
 
-    d3.selectAll('.button').classed('selected', false).classed('full-view', true)
+    d3.select(ROOT_ELEMENT()).selectAll('.button').classed('selected', false).classed('full-view', true)
 
-    d3.selectAll('.quadrant-table').classed('selected', false)
-    d3.selectAll('.home-link').classed('selected', false)
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-table').classed('selected', false)
+    d3.select(ROOT_ELEMENT()).selectAll('.home-link').classed('selected', false)
 
-    d3.selectAll('.quadrant-group').transition().duration(ANIMATION_DURATION).attr('transform', 'scale(1)')
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group').transition().duration(ANIMATION_DURATION).attr('transform', 'scale(1)')
 
-    d3.selectAll('.quadrant-group .blip-link').transition().duration(ANIMATION_DURATION).attr('transform', 'scale(1)')
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group .blip-link').transition().duration(ANIMATION_DURATION).attr('transform', 'scale(1)')
 
-    d3.selectAll('.quadrant-group').style('pointer-events', 'auto')
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group').style('pointer-events', 'auto')
   }
 
   function searchBlip(_e, ui) {
     const { blip, quadrant } = ui.item
-    const isQuadrantSelected = d3.select('div.button.' + quadrant.order).classed('selected')
+    const isQuadrantSelected = d3.select(ROOT_ELEMENT()).select('div.button.' + quadrant.order).classed('selected')
     selectQuadrant.bind({}, quadrant.order, quadrant.startAngle)()
-    const selectedDesc = d3.select('#blip-description-' + blip.number())
-    d3.select('.blip-item-description.expanded').node() !== selectedDesc.node() &&
-      d3.select('.blip-item-description.expanded').classed('expanded', false)
+    const selectedDesc = d3.select(ROOT_ELEMENT()).select('#blip-description-' + blip.number())
+    d3.select(ROOT_ELEMENT()).select('.blip-item-description.expanded').node() !== selectedDesc.node() &&
+      d3.select(ROOT_ELEMENT()).select('.blip-item-description.expanded').classed('expanded', false)
     selectedDesc.classed('expanded', true)
 
-    d3.selectAll('g.blip-link').attr('opacity', 0.3)
-    const group = d3.select('#blip-link-' + blip.number())
+    d3.select(ROOT_ELEMENT()).selectAll('g.blip-link').attr('opacity', 0.3)
+    const group = d3.select(ROOT_ELEMENT()).select('#blip-link-' + blip.number())
     group.attr('opacity', 1.0)
-    d3.selectAll('.blip-list-item').classed('highlight', false)
-    d3.select('#blip-list-item-' + blip.number()).classed('highlight', true)
+    d3.select(ROOT_ELEMENT()).selectAll('.blip-list-item').classed('highlight', false)
+    d3.select(ROOT_ELEMENT()).select('#blip-list-item-' + blip.number()).classed('highlight', true)
     if (isQuadrantSelected) {
       tip.show(blip.name(), group.node())
     } else {
@@ -393,22 +394,7 @@ const Radar = function (size, radar) {
   }
 
   function plotRadarHeader() {
-    header = d3.select('body').insert('header', '#radar')
-    header
-      .append('div')
-      .attr('class', 'radar-title')
-      .append('div')
-      .attr('class', 'radar-title__text')
-      .append('h1')
-      .text(document.title)
-      .style('cursor', 'pointer')
-      .on('click', redrawFullRadar)
-
-    header
-      .select('.radar-title')
-      .append('div')
-      .attr('class', 'radar-title__logo')
-      .html('<a href="https://www.thoughtworks.com"> <img src="/images/logo.png" /> </a>')
+    header = d3.select(ROOT_ELEMENT()).insert('header', '#radar')
 
     buttonsGroup = header.append('div').classed('buttons-group', true)
 
@@ -479,7 +465,7 @@ const Radar = function (size, radar) {
   }
 
   function plotRadarFooter() {
-    d3.select('body')
+    d3.select(ROOT_ELEMENT())
       .insert('div', '#radar-plot + *')
       .attr('id', 'footer')
       .append('div')
@@ -494,36 +480,36 @@ const Radar = function (size, radar) {
   }
 
   function mouseoverQuadrant(order) {
-    d3.select('.quadrant-group-' + order).style('opacity', 1)
-    d3.selectAll('.quadrant-group:not(.quadrant-group-' + order + ')').style('opacity', 0.3)
+    d3.select(ROOT_ELEMENT()).select('.quadrant-group-' + order).style('opacity', 1)
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group:not(.quadrant-group-' + order + ')').style('opacity', 0.3)
   }
 
   function mouseoutQuadrant(order) {
-    d3.selectAll('.quadrant-group:not(.quadrant-group-' + order + ')').style('opacity', 1)
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group:not(.quadrant-group-' + order + ')').style('opacity', 1)
   }
 
   function unselectContext(order) {
-    d3.selectAll(`.quadrant-group .blip-link`).style('opacity', 1)
-    d3.selectAll(`.quadrant-table .blip-list-item`).style('opacity', 1)
+    d3.select(ROOT_ELEMENT()).selectAll(`.quadrant-group .blip-link`).style('opacity', 1)
+    d3.select(ROOT_ELEMENT()).selectAll(`.quadrant-table .blip-list-item`).style('opacity', 1)
   }
 
   function selectContext(order) {
     selectedContext = `.context_${order}`
-    d3.selectAll(`.quadrant-group .blip-link:not(${selectedContext})`).style('opacity', 0.1)
-    d3.selectAll(`.quadrant-group .blip-link${selectedContext}`).style('opacity', 1)
-    d3.selectAll(`.quadrant-table .blip-list-item:not(${selectedContext})`).style('opacity', 0.1)
-    d3.selectAll(`.quadrant-table .blip-list-item${selectedContext}`).style('opacity', 1)
+    d3.select(ROOT_ELEMENT()).selectAll(`.quadrant-group .blip-link:not(${selectedContext})`).style('opacity', 0.1)
+    d3.select(ROOT_ELEMENT()).selectAll(`.quadrant-group .blip-link${selectedContext}`).style('opacity', 1)
+    d3.select(ROOT_ELEMENT()).selectAll(`.quadrant-table .blip-list-item:not(${selectedContext})`).style('opacity', 0.1)
+    d3.select(ROOT_ELEMENT()).selectAll(`.quadrant-table .blip-list-item${selectedContext}`).style('opacity', 1)
   }
 
   function selectQuadrant(order, startAngle) {
-    d3.selectAll('.home-link').classed('selected', false)
-    createHomeLink(d3.select('header'))
+    d3.select(ROOT_ELEMENT()).selectAll('.home-link').classed('selected', false)
+    createHomeLink(d3.select(ROOT_ELEMENT()).select('header'))
 
-    d3.selectAll('.quadrant-btn--group .button').classed('selected', false).classed('full-view', false)
-    d3.selectAll('.quadrant-btn--group .button.' + order).classed('selected', true)
-    d3.selectAll('.quadrant-table').classed('selected', false)
-    d3.selectAll('.quadrant-table.' + order).classed('selected', true)
-    d3.selectAll('.blip-item-description').classed('expanded', false)
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-btn--group .button').classed('selected', false).classed('full-view', false)
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-btn--group .button.' + order).classed('selected', true)
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-table').classed('selected', false)
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-table.' + order).classed('selected', true)
+    d3.select(ROOT_ELEMENT()).selectAll('.blip-item-description').classed('expanded', false)
 
     var scale = 2
 
@@ -543,11 +529,11 @@ const Radar = function (size, radar) {
     var blipTranslate = (1 - blipScale) / blipScale
 
     svg.style('left', moveLeft + 'px').style('right', moveRight + 'px')
-    d3.select('.quadrant-group-' + order)
+    d3.select(ROOT_ELEMENT()).select('.quadrant-group-' + order)
       .transition()
       .duration(ANIMATION_DURATION)
       .attr('transform', 'translate(' + translateX + ',' + translateY + ')scale(' + scale + ')')
-    d3.selectAll('.quadrant-group-' + order + ' .blip-link text').each(function () {
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group-' + order + ' .blip-link text').each(function () {
       var x = d3.select(this).attr('x')
       var y = d3.select(this).attr('y')
       d3.select(this.parentNode)
@@ -556,17 +542,17 @@ const Radar = function (size, radar) {
         .attr('transform', 'scale(' + blipScale + ')translate(' + blipTranslate * x + ',' + blipTranslate * y + ')')
     })
 
-    d3.selectAll('.quadrant-group').style('pointer-events', 'auto')
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group').style('pointer-events', 'auto')
 
-    d3.selectAll('.quadrant-group:not(.quadrant-group-' + order + ')')
+    d3.select(ROOT_ELEMENT()).selectAll('.quadrant-group:not(.quadrant-group-' + order + ')')
       .transition()
       .duration(ANIMATION_DURATION)
       .style('pointer-events', 'none')
-      .attr('transform', 'translate(' + translateXAll + ',' + translateYAll + ')scale(0)')
+      .attr('transform', 'translate(' + translateXAll + ',' + translateYAll + ') scale(0)')
   }
 
   self.init = function () {
-    radarElement = d3.select('body').append('div').attr('id', 'radar')
+    radarElement = d3.select(ROOT_ELEMENT()).append('div').attr('id', 'radar')
     return self
   }
 
@@ -589,9 +575,9 @@ const Radar = function (size, radar) {
         .text(alternative)
 
       if (alternative === currentSheet) {
-        d3.selectAll('.alternative')
+        d3.select(ROOT_ELEMENT()).selectAll('.alternative')
           .filter(function () {
-            return d3.select(this).text() === alternative
+            return d3.select(ROOT_ELEMENT()).select(this).text() === alternative
           })
           .attr('class', 'highlight multiple-sheet-button')
       }
