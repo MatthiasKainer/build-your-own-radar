@@ -1,6 +1,6 @@
 {
   "name": "wc-byor",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "",
   "main": "./lib/main.js",
   "module": "./lib/main.js",
@@ -19,7 +19,8 @@
     "start": "cypress open --env host=$TEST_URL",
     "serve": "webpack-dev-server --mode production --config webpack.prod.js",
     "coverage": "nyc npm run test",
-    "quality": "npm run lint-prettier:check && npm run coverage"
+    "quality": "npm run lint-prettier:check && npm run coverage",
+    "prepublishOnly": "npm run build:lib"
   },
   "author": "Thoughtworks",
   "repository": {

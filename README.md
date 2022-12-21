@@ -37,7 +37,10 @@ This version also exposes the technology radar as web-component, and be used ins
     </nav>
     <main>
       <h1>Your radar</h1>
-      <technology-radar></technology-radar>
+      <technology-radar
+        source="https://location.of/your.csv"
+        stylesheet="https://location.of/your.css"
+        ></technology-radar>
     </main>
   </body>
 </html>

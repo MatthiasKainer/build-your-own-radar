@@ -22,14 +22,32 @@ function addElement(id) {
 }
 
 customElements.define("technology-radar", class extends HTMLElement {
+    stylesheet;
+
     constructor() {
         super();
         super.innerHTML = ""
         this.attachShadow({ mode: "open" });
-        this.shadowRoot.appendChild(addStylesheet(this.hasAttribute("stylesheet") ? this.getAttribute("stylesheet") : `${window.location.origin}/main.css`))
+        this.stylesheet = addStylesheet(this.hasAttribute("stylesheet") ? this.getAttribute("stylesheet") : `${window.location.origin}/main.css`)
+        this.shadowRoot.appendChild(this.stylesheet)
         this.shadowRoot.appendChild(addElement("technology-radar"))
     }
+
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case "stylesheet":
+                if (oldValue !== newValue) {
+                    this.stylesheet.href = newValue;
+                }
+                break;
+            case "":
+                break;
+        }
+    }
     connectedCallback() {
-        GoogleSheetInput().build()
+        console.log("Loading Technology Radar via ", this.getAttribute("source") || window.location.href.match(/sheetId(.*)/) || "Loading Screen")
+        this.stylesheet.href = this.hasAttribute("stylesheet") ? this.getAttribute("stylesheet") : `${window.location.origin}/main.css`;
+        GoogleSheetInput().build(this.getAttribute("source"))
     }
 });

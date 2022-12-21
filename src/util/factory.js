@@ -151,6 +151,10 @@ const GoogleSheet = function (sheetReference, sheetName) {
 const CSVDocument = function (url) {
   var self = {}
 
+  const baseUrl = new URL(url)
+  const getFileName = (pathname) => pathname.split("/").pop();
+  const { pathname } = baseUrl
+  const basePath = pathname.substring(0, pathname.indexOf(getFileName(pathname)))
   self.build = function () {
     const headers = new Headers({
       "Content-Type": "text/csv"
@@ -158,7 +162,7 @@ const CSVDocument = function (url) {
     d3.text(url, { headers })
       .then(csv => {
         if (CsvIncludes.canParse(csv)) {
-          return CsvIncludes.load(csv, { loader: (url) => d3.text(url, { headers }) })
+          return CsvIncludes.load(csv, { loader: (url) => d3.text(new URL(basePath + url, baseUrl), { headers }) })
             .then(csv => d3.csvParse(csv))
         } else {
           return d3.csvParse(csv)
@@ -238,19 +242,21 @@ const GoogleSheetInput = function () {
   var self = {}
   var sheet
 
-  self.build = function () {
+  self.build = function (sheet) {
     var domainName = DomainName(window.location.search.substring(1))
     var queryString = window.location.href.match(/sheetId(.*)/)
     var queryParams = queryString ? QueryParams(queryString[0]) : {}
-
-    if (domainName && queryParams.sheetId.endsWith('.csv')) {
-      sheet = CSVDocument(queryParams.sheetId)
+    const sheetId = sheet || queryParams.sheetId
+    console.log("Loading", domainName, sheetId, "...")
+    if (sheetId.endsWith('.csv')) {
+      console.log("Creating csv document...")
+      sheet = CSVDocument(sheetId)
       sheet.init().build()
-    } else if (domainName && queryParams.sheetId.endsWith('.json')) {
-      sheet = JSONFile(queryParams.sheetId)
+    } else if (sheetId.endsWith('.json')) {
+      sheet = JSONFile(sheetId)
       sheet.init().build()
-    } else if (domainName && domainName.endsWith('google.com') && queryParams.sheetId) {
-      sheet = GoogleSheet(queryParams.sheetId, queryParams.sheetName)
+    } else if (domainName && domainName.endsWith('google.com') && sheetId) {
+      sheet = GoogleSheet(sheetId, queryParams.sheetName)
       console.log(queryParams.sheetName)
 
       sheet.init().build()
