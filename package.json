@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./lib/main.js",
+  "module": "./lib/main.js",
   "files": [
     "lib"
   ],

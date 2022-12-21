@@ -19,7 +19,29 @@ The docker image [mkainer/build-your-own-radar](https://hub.docker.com/repositor
 
 In the CSV file, one can use `#!includes UrlToFile.csv` references to split up the csv file. 
 
-This version also exposes the technology radar as web-component.
+This version also exposes the technology radar as web-component, and be used inside an existing page like this:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script type="module" src="https://unpkg.com/wc-byor"></script>
+  </head>
+  <body>
+    <nav>
+      <a href="/" aria-current="page">Home</a>
+      <a href="/other.html">Other page</a>
+    </nav>
+    <main>
+      <h1>Your radar</h1>
+      <technology-radar></technology-radar>
+    </main>
+  </body>
+</html>
+```
 
 ## Demo
 
