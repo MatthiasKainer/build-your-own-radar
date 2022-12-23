@@ -438,7 +438,7 @@ const Radar = function (size, radar) {
       .attr('placeholder', 'Search')
       .classed('search-radar', true)
 
-    AutoComplete('#auto-complete', quadrants, searchBlip)
+    AutoComplete(ROOT_ELEMENT().querySelector('#auto-complete'), quadrants, searchBlip)
   }
 
   function plotContextButtons(contexts) {

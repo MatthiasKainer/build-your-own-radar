@@ -34,19 +34,20 @@ customElements.define("technology-radar", class extends HTMLElement {
     }
 
 
+    static get observedAttributes() {
+        return ['stylesheet'];
+    }
+
     attributeChangedCallback(name, oldValue, newValue) {
-        switch (name) {
-            case "stylesheet":
+        ({
+            "stylesheet": () => {
                 if (oldValue !== newValue) {
                     this.stylesheet.href = newValue;
                 }
-                break;
-            case "":
-                break;
-        }
+            }
+        })[name]()
     }
     connectedCallback() {
-        console.log("Loading Technology Radar via ", this.getAttribute("source") || window.location.href.match(/sheetId(.*)/) || "Loading Screen")
         this.stylesheet.href = this.hasAttribute("stylesheet") ? this.getAttribute("stylesheet") : `${window.location.origin}/main.css`;
         GoogleSheetInput().build(this.getAttribute("source"))
     }

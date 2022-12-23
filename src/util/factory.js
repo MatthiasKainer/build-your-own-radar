@@ -243,16 +243,16 @@ const GoogleSheetInput = function () {
   var sheet
 
   self.build = function (sheet) {
-    var domainName = DomainName(window.location.search.substring(1))
+    var domainName = sheet ? DomainName(sheet) : DomainName(window.location.search.substring(1))
     var queryString = window.location.href.match(/sheetId(.*)/)
     var queryParams = queryString ? QueryParams(queryString[0]) : {}
     const sheetId = sheet || queryParams.sheetId
     console.log("Loading", domainName, sheetId, "...")
-    if (sheetId.endsWith('.csv')) {
+    if (domainName && sheetId.endsWith('.csv')) {
       console.log("Creating csv document...")
       sheet = CSVDocument(sheetId)
       sheet.init().build()
-    } else if (sheetId.endsWith('.json')) {
+    } else if (domainName && sheetId.endsWith('.json')) {
       sheet = JSONFile(sheetId)
       sheet.init().build()
     } else if (domainName && domainName.endsWith('google.com') && sheetId) {

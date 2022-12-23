@@ -1,5 +1,6 @@
 /* global gapi */
 const d3 = require('d3')
+const { ROOT_ELEMENT } = require('../util/page')
 
 // Client ID and API key from the Developer Console
 var CLIENT_ID = process.env.CLIENT_ID
