@@ -65,7 +65,8 @@ header {
   .context-btn--group,
   .multiple-sheet-button-group {
     text-align: left;
-    padding-left: 10%;
+    padding-left: 1%;
+    display: flex;
   }
 
   .print-radar-btn,
@@ -75,6 +76,7 @@ header {
   }
 
   .buttons-group {
+    display: flex;
     padding: 15px 0 25px;
   }
 
@@ -92,8 +94,6 @@ header {
   .button {
     font-size: $baseFont;
     text-transform: capitalize;
-    margin-right: 20px;
-    border-radius: 2px;
     padding: 10px 20px;
     cursor: pointer;
     transition: all 0.2s ease-out;
@@ -190,6 +190,9 @@ header {
 
 .ui-autocomplete {
   width: 275px !important;
+  background-color: white;
+  list-style: none;
+  padding: 2px;
 
   .ui-autocomplete-quadrant {
     font-size: 14px;
@@ -201,6 +204,13 @@ header {
     white-space: normal;
     font-size: 14px;
     font-weight: 400;
+    margin: 2px;
+    cursor: pointer;
+
+    :hover {
+      color: white;
+      background-color: $green;
+    }
 
     .ui-menu-item-wrapper {
       padding: 0 10px;

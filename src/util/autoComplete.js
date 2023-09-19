@@ -27,7 +27,6 @@ const AutoComplete = (el, quadrants, cb) => {
   const blips = quadrants.reduce((acc, quadrant) => {
     return [...acc, ...quadrant.quadrant.blips().map((blip) => ({ blip, quadrant }))]
   }, [])
-
   $(el).radarcomplete({
     source: (request, response) => {
       const matches = blips.filter(({ blip }) => {
